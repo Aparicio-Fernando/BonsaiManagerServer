@@ -14,6 +14,7 @@ namespace BonsaiManager.DTOs.CareRecords.Responses
         public string CareTypeName { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public string? Notes { get; set; }
+        public Guid BonsaiId { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

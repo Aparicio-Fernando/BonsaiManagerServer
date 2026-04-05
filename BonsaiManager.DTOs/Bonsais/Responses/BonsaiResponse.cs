@@ -14,7 +14,9 @@ namespace BonsaiManager.DTOs.Bonsais.Responses
         public DateTime AcquisitionDate { get; set; }
         public string? Notes { get; set; }
         public string? ImageUrl { get; set; }
+        public Guid SpeciesId { get; set; }
         public string SpeciesName { get; set; } = string.Empty;
+        public Guid UserId { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -17,10 +17,6 @@
     <Folder Include="Common\Mappings\" />
     <Folder Include="UseCases\Auth\Commands\" />
     <Folder Include="UseCases\Auth\Queries\" />
-    <Folder Include="UseCases\Bonsais\Commands\" />
-    <Folder Include="UseCases\Bonsais\Queries\" />
-    <Folder Include="UseCases\CareRecords\Commands\" />
-    <Folder Include="UseCases\CareRecords\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
