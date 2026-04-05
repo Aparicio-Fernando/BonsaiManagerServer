@@ -4,4 +4,4 @@ using MediatR;
 
 namespace BonsaiManager.Application.UseCases.CareRecords.Commands;
 
-public record DeleteCareRecordCommand(Guid Id, Guid UserId) : IRequest<ApiResponse<bool>>;
+public record DeleteCareRecordCommand(Guid Id) : IRequest<ApiResponse<bool>>;

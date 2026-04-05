@@ -7,4 +7,4 @@ using MediatR;
 
 namespace BonsaiManager.Application.UseCases.Bonsais.Commands;
 
-public record CreateBonsaiCommand(Guid UserId, CreateBonsaiRequest Request) : IRequest<ApiResponse<BonsaiResponse>>;
+public record CreateBonsaiCommand(CreateBonsaiRequest Request) : IRequest<ApiResponse<BonsaiResponse>>;

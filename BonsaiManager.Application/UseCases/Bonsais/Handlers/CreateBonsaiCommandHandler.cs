@@ -1,7 +1,7 @@
-﻿using BonsaiManager.Application.UseCases.Bonsais.Commands;
+﻿using BonsaiManager.Application.Interfaces;
+using BonsaiManager.Application.UseCases.Bonsais.Commands;
 using BonsaiManager.Data.Context;
 using BonsaiManager.DTOs.Bonsais.Responses;
-using BonsaiManager.Shared;
 using BonsaiManager.Shared.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +12,20 @@ namespace BonsaiManager.Application.UseCases.Bonsais.Handlers;
 public class CreateBonsaiCommandHandler : IRequestHandler<CreateBonsaiCommand, ApiResponse<BonsaiResponse>>
 {
     private readonly AppDbContext _context;
+    private readonly IHttpContextService _httpContextService;
 
-    public CreateBonsaiCommandHandler(AppDbContext context)
+    public CreateBonsaiCommandHandler(AppDbContext context, IHttpContextService httpContextService)
     {
         _context = context;
+        _httpContextService = httpContextService;
     }
 
     public async Task<ApiResponse<BonsaiResponse>> Handle(CreateBonsaiCommand request, CancellationToken cancellationToken)
     {
+        var userId = _httpContextService.GetCurrentUserId();
+
         var speciesExists = await _context.Species
             .AnyAsync(s => s.Id == request.Request.SpeciesId, cancellationToken);
-
         if (!speciesExists)
             return ApiResponse<BonsaiResponse>.Fail("La especie indicada no existe.");
 
@@ -35,7 +38,7 @@ public class CreateBonsaiCommandHandler : IRequestHandler<CreateBonsaiCommand, A
             Notes = request.Request.Notes,
             ImageUrl = request.Request.ImageUrl,
             SpeciesId = request.Request.SpeciesId,
-            UserId = request.UserId
+            UserId = userId
         };
 
         await _context.Bonsais.AddAsync(bonsai, cancellationToken);

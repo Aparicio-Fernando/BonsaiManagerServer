@@ -1,7 +1,7 @@
-﻿using BonsaiManager.Application.UseCases.Bonsais.Commands;
+﻿using BonsaiManager.Application.Interfaces;
+using BonsaiManager.Application.UseCases.Bonsais.Commands;
 using BonsaiManager.Data.Context;
 using BonsaiManager.DTOs.Bonsais.Responses;
-using BonsaiManager.Shared;
 using BonsaiManager.Shared.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,23 +11,25 @@ namespace BonsaiManager.Application.UseCases.Bonsais.Handlers;
 public class UpdateBonsaiCommandHandler : IRequestHandler<UpdateBonsaiCommand, ApiResponse<BonsaiResponse>>
 {
     private readonly AppDbContext _context;
+    private readonly IHttpContextService _httpContextService;
 
-    public UpdateBonsaiCommandHandler(AppDbContext context)
+    public UpdateBonsaiCommandHandler(AppDbContext context, IHttpContextService httpContextService)
     {
         _context = context;
+        _httpContextService = httpContextService;
     }
 
     public async Task<ApiResponse<BonsaiResponse>> Handle(UpdateBonsaiCommand request, CancellationToken cancellationToken)
     {
-        var bonsai = await _context.Bonsais
-            .FirstOrDefaultAsync(b => b.Id == request.Id && b.UserId == request.UserId, cancellationToken);
+        var userId = _httpContextService.GetCurrentUserId();
 
+        var bonsai = await _context.Bonsais
+            .FirstOrDefaultAsync(b => b.Id == request.Id && b.UserId == userId, cancellationToken);
         if (bonsai is null)
             return ApiResponse<BonsaiResponse>.Fail("Bonsai no encontrado.");
 
         var speciesExists = await _context.Species
             .AnyAsync(s => s.Id == request.Request.SpeciesId, cancellationToken);
-
         if (!speciesExists)
             return ApiResponse<BonsaiResponse>.Fail("La especie indicada no existe.");
 

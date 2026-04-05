@@ -7,4 +7,4 @@ using MediatR;
 
 namespace BonsaiManager.Application.UseCases.CareRecords.Commands;
 
-public record AddCareRecordCommand(Guid BonsaiId, Guid UserId, AddCareRecordRequest Request) : IRequest<ApiResponse<CareRecordResponse>>;
+public record AddCareRecordCommand(Guid BonsaiId, AddCareRecordRequest Request) : IRequest<ApiResponse<CareRecordResponse>>;

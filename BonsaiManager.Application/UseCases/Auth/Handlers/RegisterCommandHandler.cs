@@ -1,8 +1,7 @@
-﻿using BonsaiManager.Application.UseCases.Auth.Commands;
+﻿using BonsaiManager.Application.Interfaces;
+using BonsaiManager.Application.UseCases.Auth.Commands;
 using BonsaiManager.Data.Context;
-using BonsaiManager.DTOs.Auth;
 using BonsaiManager.DTOs.Auth.Responses;
-using BonsaiManager.Shared;
 using BonsaiManager.Shared.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +12,15 @@ namespace BonsaiManager.Application.UseCases.Auth.Handlers;
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ApiResponse<AuthResponse>>
 {
     private readonly AppDbContext _context;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public RegisterCommandHandler(AppDbContext context)
+    public RegisterCommandHandler(AppDbContext context, IPasswordHasher passwordHasher)
     {
         _context = context;
+        _passwordHasher = passwordHasher;
     }
 
-    public async Task<ApiResponse<AuthResponse>> Handle(RegisterCommand request,  CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var emailExists = await _context.Users
             .AnyAsync(u => u.Email == request.Request.Email, cancellationToken);
@@ -32,7 +33,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ApiRespon
             Id = Guid.NewGuid(),
             Name = request.Request.Name,
             Email = request.Request.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Request.Password),
+            PasswordHash = _passwordHasher.Hash(request.Request.Password),
             Role = "User"
         };
 

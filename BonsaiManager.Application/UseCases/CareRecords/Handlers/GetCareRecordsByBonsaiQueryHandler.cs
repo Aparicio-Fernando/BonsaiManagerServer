@@ -1,4 +1,5 @@
-﻿using BonsaiManager.Application.UseCases.CareRecords.Queries;
+﻿using BonsaiManager.Application.Interfaces;
+using BonsaiManager.Application.UseCases.CareRecords.Queries;
 using BonsaiManager.Data.Context;
 using BonsaiManager.DTOs.CareRecords;
 using BonsaiManager.DTOs.CareRecords.Responses;
@@ -12,16 +13,20 @@ namespace BonsaiManager.Application.UseCases.CareRecords.Handlers;
 public class GetCareRecordsByBonsaiQueryHandler : IRequestHandler<GetCareRecordsByBonsaiQuery, ApiResponse<List<CareRecordResponse>>>
 {
     private readonly AppDbContext _context;
+    private readonly IHttpContextService _httpContextService;
 
-    public GetCareRecordsByBonsaiQueryHandler(AppDbContext context)
+    public GetCareRecordsByBonsaiQueryHandler(AppDbContext context, IHttpContextService httpContextService)
     {
         _context = context;
+        _httpContextService = httpContextService;
     }
 
     public async Task<ApiResponse<List<CareRecordResponse>>> Handle(GetCareRecordsByBonsaiQuery request, CancellationToken cancellationToken)
     {
+        var userId = _httpContextService.GetCurrentUserId();
+
         var bonsaiExists = await _context.Bonsais
-            .AnyAsync(b => b.Id == request.BonsaiId && b.UserId == request.UserId, cancellationToken);
+            .AnyAsync(b => b.Id == request.BonsaiId && b.UserId == userId, cancellationToken);
 
         if (!bonsaiExists)
             return ApiResponse<List<CareRecordResponse>>.Fail("Bonsai no encontrado.");

@@ -1,6 +1,6 @@
-﻿using BonsaiManager.Application.UseCases.Bonsais.Queries;
+﻿using BonsaiManager.Application.Interfaces;
+using BonsaiManager.Application.UseCases.Bonsais.Queries;
 using BonsaiManager.Data.Context;
-using BonsaiManager.DTOs.Bonsais;
 using BonsaiManager.DTOs.Bonsais.Responses;
 using BonsaiManager.Shared;
 using BonsaiManager.Shared.Common;
@@ -12,17 +12,21 @@ namespace BonsaiManager.Application.UseCases.Bonsais.Handlers;
 public class GetBonsaisByUserQueryHandler : IRequestHandler<GetBonsaisByUserQuery, ApiResponse<PaginatedResponse<BonsaiResponse>>>
 {
     private readonly AppDbContext _context;
+    private readonly IHttpContextService _httpContextService;
 
-    public GetBonsaisByUserQueryHandler(AppDbContext context)
+    public GetBonsaisByUserQueryHandler(AppDbContext context, IHttpContextService httpContextService)
     {
         _context = context;
+        _httpContextService = httpContextService;
     }
 
     public async Task<ApiResponse<PaginatedResponse<BonsaiResponse>>> Handle(GetBonsaisByUserQuery request, CancellationToken cancellationToken)
     {
+        var userId = _httpContextService.GetCurrentUserId();
+
         var query = _context.Bonsais
             .AsNoTracking()
-            .Where(b => b.UserId == request.UserId);
+            .Where(b => b.UserId == userId);
 
         if (!string.IsNullOrWhiteSpace(request.Pagination.SearchTerm))
             query = query.Where(b => b.Name.Contains(request.Pagination.SearchTerm));

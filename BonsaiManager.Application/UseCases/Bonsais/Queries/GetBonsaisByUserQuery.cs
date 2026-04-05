@@ -6,4 +6,4 @@ using MediatR;
 
 namespace BonsaiManager.Application.UseCases.Bonsais.Queries;
 
-public record GetBonsaisByUserQuery(Guid UserId, PaginatedRequest Pagination) : IRequest<ApiResponse<PaginatedResponse<BonsaiResponse>>>;
+public record GetBonsaisByUserQuery(PaginatedRequest Pagination) : IRequest<ApiResponse<PaginatedResponse<BonsaiResponse>>>;

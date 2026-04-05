@@ -6,4 +6,4 @@ using MediatR;
 
 namespace BonsaiManager.Application.UseCases.CareRecords.Queries;
 
-public record GetCareRecordsByBonsaiQuery(Guid BonsaiId, Guid UserId) : IRequest<ApiResponse<List<CareRecordResponse>>>;
+public record GetCareRecordsByBonsaiQuery(Guid BonsaiId) : IRequest<ApiResponse<List<CareRecordResponse>>>;

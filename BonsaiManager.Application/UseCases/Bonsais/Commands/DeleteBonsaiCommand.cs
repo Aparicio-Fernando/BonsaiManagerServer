@@ -4,4 +4,4 @@ using MediatR;
 
 namespace BonsaiManager.Application.UseCases.Bonsais.Commands;
 
-public record DeleteBonsaiCommand(Guid Id, Guid UserId) : IRequest<ApiResponse<bool>>;
+public record DeleteBonsaiCommand(Guid Id) : IRequest<ApiResponse<bool>>;
