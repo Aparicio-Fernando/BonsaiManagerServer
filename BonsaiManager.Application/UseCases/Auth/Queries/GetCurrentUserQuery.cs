@@ -1,0 +1,9 @@
+﻿using BonsaiManager.DTOs.Auth;
+using BonsaiManager.DTOs.Auth.Responses;
+using BonsaiManager.Shared;
+using BonsaiManager.Shared.Common;
+using MediatR;
+
+namespace BonsaiManager.Application.UseCases.Auth.Queries;
+
+public record GetCurrentUserQuery(Guid UserId) : IRequest<ApiResponse<AuthResponse>>;
