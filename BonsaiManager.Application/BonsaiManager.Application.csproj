@@ -12,4 +12,9 @@
     <ProjectReference Include="..\BonsaiManager.Shared\BonsaiManager.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+
 </Project>
