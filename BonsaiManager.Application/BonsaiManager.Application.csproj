@@ -7,14 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BonsaiManager.Data\BonsaiManager.Data.csproj" />
     <ProjectReference Include="..\BonsaiManager.Domain\BonsaiManager.Domain.csproj" />
     <ProjectReference Include="..\BonsaiManager.DTOs\BonsaiManager.DTOs.csproj" />
     <ProjectReference Include="..\BonsaiManager.Shared\BonsaiManager.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="UseCases\" />
+    <Folder Include="Common\Mappings\" />
+    <Folder Include="UseCases\Auth\Commands\" />
+    <Folder Include="UseCases\Auth\Queries\" />
+    <Folder Include="UseCases\Bonsais\Commands\" />
+    <Folder Include="UseCases\Bonsais\Queries\" />
+    <Folder Include="UseCases\CareRecords\Commands\" />
+    <Folder Include="UseCases\CareRecords\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 
 </Project>
